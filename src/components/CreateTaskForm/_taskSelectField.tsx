@@ -1,20 +1,14 @@
 import React, { FC, ReactElement } from "react";
 import { ISelectField } from "./interfaces/ISelectField";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const TaskSelectField: FC<ISelectField> = ({
-  onChange = (e: SelectChangeEvent) => console.log(e),
   name = "selectBox",
   label = "Select Box",
   value = "",
   items = [{ value: "", label: "Add Items" }],
   disable = false,
+  reference,
 }): ReactElement => {
   return (
     <FormControl
@@ -22,13 +16,14 @@ const TaskSelectField: FC<ISelectField> = ({
       size="small">
       <InputLabel id={`${name}-id`}>{label}</InputLabel>
       <Select
+        inputRef={reference}
         disabled={disable}
         id={`${name}-id`}
         labelId={`${name}-id-select`}
-        value={value}
+        // value={value}
         label={label}
-        name={name}
-        onChange={onChange}>
+        defaultValue={value}
+        name={name}>
         {items.map((item, i) => {
           return (
             <MenuItem

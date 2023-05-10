@@ -3,13 +3,12 @@ import { TextField } from "@mui/material";
 import { ITextField } from "./interfaces/ITextField";
 
 const TaskDescriptionField: FC<ITextField> = ({
-  onChange = (desc) => {
-    console.log(desc);
-  },
   disable = false,
+  reference,
 }): ReactElement => {
   return (
     <TextField
+      inputRef={reference}
       id="description"
       label="description"
       placeholder="Description"
@@ -19,7 +18,6 @@ const TaskDescriptionField: FC<ITextField> = ({
       rows={4}
       multiline
       fullWidth
-      onChange={onChange}
       disabled={disable}
     />
   );

@@ -1,6 +1,6 @@
 import { IDisabled } from "./IDisabled";
-import React from "react";
+import { RefObject } from "react";
 
 export interface ITextField extends IDisabled {
-    onChange?: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
+    reference: RefObject<HTMLInputElement> | undefined
 }
