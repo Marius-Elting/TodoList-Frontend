@@ -1,13 +1,21 @@
 import { Box, Grid } from "@mui/material";
 import React, { FC, ReactElement, useEffect } from "react";
-
+import { ITaskApi } from "./interfaces/ITaskApi";
 import Task from "../Task/Task";
 import TaskCounter from "../TaskCounter/TaskCounter";
 import { format } from "date-fns";
 import { sendApiRequest } from "../../helpers/sendApiRequest";
 import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const TaskArea: FC = (): ReactElement => {
+  const { error, isLoading, data, refetch } = useQuery(["tasks"], async () => {
+    return await sendApiRequest<ITaskApi[]>(
+      "http://localhost:7777/api/v1/tasks/get",
+      "GET"
+    );
+  });
+
   const getTaskMutation = useMutation(() =>
     sendApiRequest("http://localhost:7777/api/v1/tasks/get", "GET", {})
   );
