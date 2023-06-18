@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useRef } from "react";
+import React, { FC, ReactElement, useRef, useState, useEffect } from "react";
 import {
   Box,
   Stack,
@@ -24,6 +24,7 @@ const CreateTaskForm: FC = (): ReactElement => {
   const dateRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLSelectElement>(null);
   const priorityRef = useRef<HTMLSelectElement>(null);
+  const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
   const createTaskMutation = useMutation((data: ICreateTask) =>
     sendApiRequest("http://localhost:7777/api/v1/tasks/post", "POST", data)
@@ -38,7 +39,6 @@ const CreateTaskForm: FC = (): ReactElement => {
       !priorityRef.current?.value
     ) {
       return;
-      console.log("ERRIR");
     }
 
     const data: ICreateTask = {
@@ -52,6 +52,19 @@ const CreateTaskForm: FC = (): ReactElement => {
     createTaskMutation.mutate(data);
   };
 
+  useEffect(() => {
+    if (createTaskMutation.isSuccess) {
+      setShowSuccess(true);
+    }
+    const successTimeout = setTimeout(() => {
+      setShowSuccess(false);
+    }, 7000);
+
+    return () => {
+      clearTimeout(successTimeout);
+    };
+  }, [createTaskMutation.isSuccess]);
+
   return (
     <Box
       display="flex"
@@ -60,7 +73,7 @@ const CreateTaskForm: FC = (): ReactElement => {
       width="100%"
       px={4}
       my={6}>
-      {createTaskMutation.isSuccess && (
+      {showSuccess && (
         <Alert
           severity="success"
           sx={{ width: "100%", marginBottom: "16px" }}>

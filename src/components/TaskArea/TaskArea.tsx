@@ -1,11 +1,27 @@
 import { Box, Grid } from "@mui/material";
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactElement, useEffect } from "react";
 
 import Task from "../Task/Task";
 import TaskCounter from "../TaskCounter/TaskCounter";
 import { format } from "date-fns";
+import { sendApiRequest } from "../../helpers/sendApiRequest";
+import { useMutation } from "@tanstack/react-query";
 
 const TaskArea: FC = (): ReactElement => {
+  const getTaskMutation = useMutation(() =>
+    sendApiRequest("http://localhost:7777/api/v1/tasks/get", "GET", {})
+  );
+
+  useEffect(() => {
+    (async () => {
+      const data = getTaskMutation.mutate(_, {
+        onSuccess: (res: any) => {
+          console.log(res);
+        },
+      });
+      console.log(data);
+    })();
+  }, []);
   return (
     <Grid
       item

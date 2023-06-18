@@ -32,7 +32,6 @@ export const sendApiRequest = async <T>(
         throw new Error(`An Error has occured" §{response.status}`)
     }
 
-
     return response.json()
 }
 
