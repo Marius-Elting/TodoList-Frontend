@@ -4,9 +4,7 @@ import { ITaskHeader } from './ITaskHeader';
 
 export interface ITask
   extends ITaskHeader,
-    ITaskDescription,
-    ITaskFooter {
-  id?: string;
+  ITaskDescription,
+  ITaskFooter {
   priority?: string;
-  status?: string;
 }
