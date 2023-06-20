@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Alert, LinearProgress } from "@mui/material";
 import React, { FC, ReactElement, useEffect } from "react";
 import { ITaskApi } from "./interfaces/ITaskApi";
 import Task from "../Task/Task";
@@ -15,13 +15,15 @@ const TaskArea: FC = (): ReactElement => {
       "GET"
     );
   });
-
+  console.log(data);
+  console.log(error);
   const getTaskMutation = useMutation(() =>
     sendApiRequest("http://localhost:7777/api/v1/tasks/get", "GET", {})
   );
 
   useEffect(() => {
     (async () => {
+      //@ts-ignore
       const data = getTaskMutation.mutate(_, {
         onSuccess: (res: any) => {
           console.log(res);
@@ -63,9 +65,39 @@ const TaskArea: FC = (): ReactElement => {
           flexDirection="column"
           xs={10}
           md={8}>
-          <Task />
-          <Task />
-          <Task />
+          {error ? (
+            <>
+              <Alert severity="error">
+                There was an error fetching your tasks
+              </Alert>
+            </>
+          ) : (
+            ""
+          )}
+          {!error && Array.isArray(data) && data.length === 0 && (
+            <>
+              <Alert severity="warning">
+                You dont have any tasks created yet
+              </Alert>
+            </>
+          )}
+          {isLoading ? (
+            <LinearProgress />
+          ) : (
+            Array.isArray(data) &&
+            data.length > 0 &&
+            data?.map((item, i) => (
+              <Task
+                key={i}
+                id={item.id}
+                title={item.title}
+                date={new Date(item.date)}
+                description={item.description}
+                priority={item.priority}
+                status={item.status}
+              />
+            ))
+          )}
         </Grid>
       </Grid>
     </Grid>
