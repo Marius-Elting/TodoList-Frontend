@@ -5,9 +5,9 @@ import Task from "../Task/Task";
 import TaskCounter from "../TaskCounter/TaskCounter";
 import { format } from "date-fns";
 import { sendApiRequest } from "../../helpers/sendApiRequest";
-import { useMutation } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Status } from "../CreateTaskForm/enums/Status";
+import { IUpdateTask } from "./interfaces/IUpdateTask";
 
 const TaskArea: FC = (): ReactElement => {
   const { error, isLoading, data, refetch } = useQuery(["tasks"], async () => {
@@ -33,6 +33,20 @@ const TaskArea: FC = (): ReactElement => {
       console.log(data);
     })();
   }, []);
+
+  const updateTaskMutation = useMutation((data: IUpdateTask) =>
+    sendApiRequest("http://localhost:7777/api/v1/tasks/put", "PUT", data)
+  );
+
+  const onStatusChangeHandler = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => {
+    updateTaskMutation.mutate({
+      id,
+      status: e.target.checked ? Status.inProgress : Status.todo,
+    });
+  };
   return (
     <Grid
       item
@@ -100,6 +114,7 @@ const TaskArea: FC = (): ReactElement => {
                     description={item.description}
                     priority={item.priority}
                     status={item.status}
+                    onStatusChange={onStatusChangeHandler}
                   />
                 );
               })

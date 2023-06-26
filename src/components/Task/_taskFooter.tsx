@@ -25,7 +25,7 @@ export const TaskFooter: FC<ITaskFooter> = (props): ReactElement => {
         control={
           <Switch
             defaultChecked={status === Status.inProgress ? true : false}
-            onChange={(e) => onStatusChange(e)}
+            onChange={(e) => onStatusChange(e, id)}
             color="warning"
           />
         }
@@ -35,14 +35,9 @@ export const TaskFooter: FC<ITaskFooter> = (props): ReactElement => {
         color="success"
         size="small"
         sx={{ color: "#ffffff" }}
-        onClick={(e) => onClick(e)}>
+        onClick={(e) => onClick(e, id)}>
         Mark Complete
       </Button>
     </Box>
   );
-};
-
-TaskFooter.propTypes = {
-  onStatusChange: PropTypes.func,
-  onClick: PropTypes.func,
 };
