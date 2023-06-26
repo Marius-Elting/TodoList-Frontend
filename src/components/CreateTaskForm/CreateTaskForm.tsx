@@ -40,7 +40,6 @@ const CreateTaskForm: FC = (): ReactElement => {
     ) {
       return;
     }
-    console.log(dateRef.current);
 
     const data: ICreateTask = {
       title: titleRef.current.value,
