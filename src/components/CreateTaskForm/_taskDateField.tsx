@@ -3,6 +3,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { IDateField } from "./interfaces/IDateField";
+import { TextField } from "@mui/material";
 
 const TaskDateField: FC<IDateField> = ({
   value = new Date(),
@@ -15,9 +16,9 @@ const TaskDateField: FC<IDateField> = ({
         value={value}
         inputRef={reference}
         label="Task Date"
-        format="dd/MM/yyyy"
+        format="MM/dd/yyyy"
         disabled={disable}
-        // renderInput={(params) => <TextField {...params} />}
+        // renderInput={(props) => <TextField {...props} />}
       />
     </LocalizationProvider>
   );
