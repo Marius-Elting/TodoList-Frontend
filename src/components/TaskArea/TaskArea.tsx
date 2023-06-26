@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { sendApiRequest } from "../../helpers/sendApiRequest";
 import { useMutation } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import { Status } from "../CreateTaskForm/enums/Status";
 
 const TaskArea: FC = (): ReactElement => {
   const { error, isLoading, data, refetch } = useQuery(["tasks"], async () => {
@@ -86,17 +87,22 @@ const TaskArea: FC = (): ReactElement => {
           ) : (
             Array.isArray(data) &&
             data.length > 0 &&
-            data?.map((item, i) => (
-              <Task
-                key={i}
-                id={item.id}
-                title={item.title}
-                date={new Date(item.date)}
-                description={item.description}
-                priority={item.priority}
-                status={item.status}
-              />
-            ))
+            data
+              ?.filter((a) => a.status !== Status.completed)
+              ?.map((item, i) => {
+                console.log(new Date(item.date));
+                return (
+                  <Task
+                    key={i}
+                    id={item.id}
+                    title={item.title}
+                    date={new Date(item.date)}
+                    description={item.description}
+                    priority={item.priority}
+                    status={item.status}
+                  />
+                );
+              })
           )}
         </Grid>
       </Grid>

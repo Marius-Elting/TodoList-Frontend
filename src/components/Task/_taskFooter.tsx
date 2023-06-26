@@ -3,6 +3,7 @@ import React, { FC, ReactElement } from "react";
 
 import { ITaskFooter } from "./interfaces/ITaskFooter";
 import PropTypes from "prop-types";
+import { Status } from "../CreateTaskForm/enums/Status";
 
 export const TaskFooter: FC<ITaskFooter> = (props): ReactElement => {
   //  Destructure props
@@ -23,6 +24,7 @@ export const TaskFooter: FC<ITaskFooter> = (props): ReactElement => {
         label="In Progress"
         control={
           <Switch
+            defaultChecked={status === Status.inProgress ? true : false}
             onChange={(e) => onStatusChange(e)}
             color="warning"
           />
