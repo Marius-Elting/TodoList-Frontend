@@ -8,6 +8,7 @@ import { sendApiRequest } from "../../helpers/sendApiRequest";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Status } from "../CreateTaskForm/enums/Status";
 import { IUpdateTask } from "./interfaces/IUpdateTask";
+import _default from "@mui/material/styles/identifier";
 
 const TaskArea: FC = (): ReactElement => {
   const { error, isLoading, data, refetch } = useQuery(["tasks"], async () => {
@@ -16,21 +17,18 @@ const TaskArea: FC = (): ReactElement => {
       "GET"
     );
   });
-  console.log(data);
-  console.log(error);
+
   const getTaskMutation = useMutation(() =>
     sendApiRequest("http://localhost:7777/api/v1/tasks/get", "GET", {})
   );
 
   useEffect(() => {
     (async () => {
-      //@ts-ignore
-      const data = getTaskMutation.mutate(_, {
+      const data = getTaskMutation.mutate(undefined as void, {
         onSuccess: (res: any) => {
-          console.log(res);
+          // console.log(res);
         },
       });
-      console.log(data);
     })();
   }, []);
 
@@ -103,21 +101,18 @@ const TaskArea: FC = (): ReactElement => {
             data.length > 0 &&
             data
               ?.filter((a) => a.status !== Status.completed)
-              ?.map((item, i) => {
-                console.log(new Date(item.date));
-                return (
-                  <Task
-                    key={i}
-                    id={item.id}
-                    title={item.title}
-                    date={new Date(item.date)}
-                    description={item.description}
-                    priority={item.priority}
-                    status={item.status}
-                    onStatusChange={onStatusChangeHandler}
-                  />
-                );
-              })
+              ?.map((item, i) => (
+                <Task
+                  key={i}
+                  id={item.id}
+                  title={item.title}
+                  date={new Date(item.date)}
+                  description={item.description}
+                  priority={item.priority}
+                  status={item.status}
+                  onStatusChange={onStatusChangeHandler}
+                />
+              ))
           )}
         </Grid>
       </Grid>
