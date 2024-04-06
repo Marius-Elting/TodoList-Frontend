@@ -9,6 +9,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { Status } from "../CreateTaskForm/enums/Status";
 import { IUpdateTask } from "./interfaces/IUpdateTask";
 import _default from "@mui/material/styles/identifier";
+import { countTasks } from "./helpers/countTasks";
 
 const TaskArea: FC = (): ReactElement => {
   const { error, isLoading, data, refetch } = useQuery(["tasks"], async () => {
@@ -68,9 +69,18 @@ const TaskArea: FC = (): ReactElement => {
           md={10}
           xs={12}
           mb={8}>
-          <TaskCounter />
-          <TaskCounter />
-          <TaskCounter />
+          <TaskCounter
+            status={Status.todo}
+            count={data && countTasks(data, Status.todo)}
+          />
+          <TaskCounter
+            status={Status.inProgress}
+            count={data && countTasks(data, Status.inProgress)}
+          />
+          <TaskCounter
+            status={Status.completed}
+            count={data && countTasks(data, Status.completed)}
+          />
         </Grid>
         <Grid
           item
